@@ -1,72 +1,68 @@
-# Code Crafted Resume
+# Code Crafted Resume Documentation
 
-A resume builder designed for Developers and Software Engineers.
+This document provides an overview of the Code Crafted Resume application, including its functionality, technical stack, project setup instructions, and key use cases.
 
-Do you need a quick and easy resume builder to build a resume which you can actually use(shocking, right?) for applying to a tech job? [CodeCraftedResume.pages.dev](https://codecraftedresume.pages.dev/) to the rescue.
+## 1. Overview
 
-You can drag to reorder form lists and resume sections from the side bar, live preview with side-by-side edit mode and preview & save your application-ready resume PDF with 2 clicks!
+Code Crafted Resume is a client-side resume builder specifically designed for developers and software engineers. It allows users to create and customize their resumes with features like drag-and-drop reordering of sections and list items, a live side-by-side preview, and the ability to generate and download an ATS-friendly PDF. The application prioritizes user privacy by performing all PDF generation directly in the browser, ensuring no user data is collected or shared.
 
-The app uses [@react-pdf/renderer](https://react-pdf.org/) to render the pdf on the client so there are no worries of leaking your data. There is no collection or sharing of data involved.
+## 2. Tech Stack
 
-```
-NOTICE: The App isn't really responsive right now. It does not display well on smaller 
-screens & also when zoomed in. Fixing this is a priority and I'm working on improving the 
-layout & responisiveness of the app. Changes are being made in branch fix-responsive-issue
-```
+### Frontend
 
-## Latest Changes
+The application is built as a Single Page Application (SPA) using the following frontend technologies:
 
-1. The generated resume is now ATS friendly
-   - The text copied from the PDF generated used to be garbled.
-   - This has been fixed by patching the package `@react-pdf/pdfkit` with code from [#2408](https://github.com/diegomura/react-pdf/pull/2408) which fixes the issues [#915](https://github.com/diegomura/react-pdf/issues/915) and [#1950](https://github.com/diegomura/react-pdf/issues/1950).
-   - The patch can be removed on the next release of `@react-pdf/pdfkit` when the pull request [#2408](https://github.com/diegomura/react-pdf/pull/2408) is merged.
+*   **React:** The core library for building the user interface.
+*   **TypeScript:** Used for all new components, hooks, and utility files to enhance code quality and maintainability.
+*   **Tailwind CSS:** Utilized for all styling, providing a utility-first approach for responsive and consistent design.
+*   **Shadcn/ui:** A collection of reusable UI components that are integrated to maintain consistency and accelerate development.
+*   **Zustand:** A lightweight state management solution for managing global application state. Data is persisted locally using `zustand/middleware/persist`.
+*   **@react-pdf/renderer:** A dedicated library for generating and rendering PDF documents directly on the client-side.
+*   **@dnd-kit:** A modern, lightweight, and highly customizable drag-and-drop toolkit for React, used for reordering resume sections and list items.
+*   **Lucide-react:** The preferred library for all icons within the application.
+*   **File-saver:** Used to enable client-side downloading of the generated PDF files.
+*   **pdfjs-dist:** For rendering PDF previews within the application's UI.
 
-## Disclaimer
+### Backend
 
-The format of the rendered resume was heavily dependent on the template provided by Colin at [Sheets & Giggles](https://sheetsgiggles.com/) in one of the top posts on the r/jobs subreddit. If you prefer to create your resume from the original template document, here is the link: [SheetsResume.com](https://sheetsresume.com/resume-template/). It is available as both Word Document and Google Doc.
+This application is entirely client-side. There is no dedicated backend server or API. All data processing and PDF generation occur within the user's browser.
 
-## Preview
+### Database
+
+There is no traditional database used. All application state, including user-entered resume data, is managed by **Zustand** and persisted in the browser's `localStorage` for a seamless user experience across sessions.
+
+## 3. Project Setup
+
+To set up and run the Code Crafted Resume project locally, follow these steps:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd code-crafted-resume
+    ```
+2.  **Install dependencies:**
+    The project uses `npm`. Install all required packages:
+    ```bash
+    npm install
+    ```
+    *Note: The `postinstall` script will automatically run `patch-package` to apply necessary patches for `@react-pdf/pdfkit`.*
+3.  **Start the development server:**
+    ```bash
+    npm start
+    ```
+    This will start the application in development mode, and it will typically open in your browser at `http://localhost:3000`.
+
+## 4. Use Cases
+
+The Code Crafted Resume application is designed to address the following primary use cases:
+
+*   **Resume Creation:** Users can easily input their personal details, work experience, projects, education, skills, and other relevant information through a guided form interface.
+*   **Customization and Reordering:** Users can dynamically add, remove, and reorder resume sections (e.g., Work Experience, Projects) and bullet points within sections using intuitive drag-and-drop functionality.
+*   **Live Preview:** A side-by-side live preview allows users to see real-time updates to their resume as they fill out the form, ensuring the final output matches their expectations.
+*   **PDF Generation and Download:** The application generates a professional, ATS-friendly PDF version of the resume directly in the browser, which users can then download to their local machine.
+*   **Sample Data Population:** For quick starts or demonstrations, users can populate the form with sample data.
+*   **Data Persistence:** User data is automatically saved locally in the browser, allowing users to close and reopen the application without losing their progress.
+
+## 5. Preview
 
 ![Fom Preview](preview.png)
-
-## Features to be added
-
-These are the features that I wanted to implement but did not prioritise due to the time constraint that I set for myself. I will be adding them one-by-one to the app whenever I have time to do so.
-
-- [ ] Add achievements section to the form
-- [ ] Fix navigation buttons in place so that button on one side don't change sides when the button on the other side becomes inactive.
-- [ ] Modify input placeholders
-- [ ] Warnings when recommended inputs are left blank
-- [ ] Change skill checkbox to sliding toggle
-- [ ] Fix edit mode turning off when a section is deleted
-- [ ] Animate
-  - [ ] Welcome page unmounting
-  - [ ] Live preview mounting
-  - [ ] Adding sections in sidbar
-  - [ ] Section indicator during navigation
-- [ ] Option to add or change accent color (lines and subheadings).
-- [ ] Make the app more responsive.
-- [ ] Improve PDF rendering efficiency.
-- [ ] Option to align resume header(name, title, links, etc) to center.
-
-## What I learned
-
-While doing this project, I learned:
-- React Fundamentals
-- Creating a react app with Create React App
-  - Learned other better ways for this as well, like through Vite or Next.js
-  - But decided to go ahead with CRA since The Odin Project recommended CRA when I started the project for learning purposes
-  - It probably is still fine for learning
-- Class components and lifecycle methods
-- Function components and Hooks
-- Migrating from class components to function components
-  - and replacing lifecycle methods with equivalent hooks like useEffect
-- Controlling inputs and rendering lists in react
-- Managing state in react
-- Using external libraries like Zustand, react-pdf & dndkit
-  - Zustand for global state management
-  - react-pdf for pdf generation
-  - dndkit for sortable drag 'n' drop lists
-- Deploying a site with a PaaS like Cloudflare Pages.
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
